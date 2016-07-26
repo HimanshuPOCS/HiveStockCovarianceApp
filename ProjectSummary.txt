@@ -1,0 +1,15 @@
+Analyse the stocks data from a ‘New York Stock Exchange’ dataset and calculate the covariance for a stock using Hive. Create the application where user will be prompted to input the valid year in ‘YYYY’ format for which he/she wants to calculate the Covariance of Stocks Data.
+
+Covariance is the finance term represents the degree or amount that two stocks or financial instruments move together or apart from each other. With covariance, investors have the opportunity to seek out different investment options based upon their respective risk profile. It is a statistical measure of how one investment moves in relation to another.
+- A positive covariance means that asset returns moved together. If investment instruments or stocks tend to be up or down during the same time periods, they have positive covariance.
+- A negative covariance means returns move inversely. If one investment instrument tends to be up while the other is down, they have negative covariance.
+This will help a stock broker in recommending the stocks to his customers.
+
+Problem Statement
+Evaluate the existing Data Analysis Technologies and recommend the best possible solution for calculating the covariance for the huge stocks data analysis.
+2. The application could be console based where user will be prompted to input the valid year in ‘YYYY’ format for which he/she wants to calculate the Covariance of Stocks Data.
+Dataset: The sample dataset provided is a comma separated file (CSV) named ‘NYSE_daily_prices_Q.csv’ that contains the stock information such as daily quotes, Stock opening price, Stock highest price etc. at New York Stock Exchange.
+Assumption: The dataset provided is just sample small dataset having around 3500 records, but in the real production environment there could be huge stock data into GBs or TBs.
+So your solution must be supported in real production environment.
+
+himanshusyntel@gmail.com's googlecode.com password: MJ6Ba9jB2nM5

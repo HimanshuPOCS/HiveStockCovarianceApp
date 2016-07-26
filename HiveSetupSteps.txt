@@ -1,0 +1,65 @@
+Steps for showing practical meetup agenda:
+
+1. Tell about the problem and test data
+/home/cloudera/HiveMeetup/HiveStockCovariance/data
+
+2.Tell them about setting up hive on cloudera
+http://www.3pillarglobal.com/insights/configure-hive-cloudera
+
+root@cloudera-vm:/home/cloudera# > cd /usr/lib/hive/conf/
+root@cloudera-vm:/home/cloudera# > sudo gedit hive-site.xml
+
+3. #sudo hive
+Create table into hive database
+hive> create table NYSE (exchange String,stock_symbol String,stock_date String,stock_price_open double, stock_price_high double, stock_price_low double, stock_price_close double, stock_volume double, stock_price_adj_close double) row format delimited fields terminated by ',';
+
+4. Load CSV Data into Hive Table
+hive> load data local inpath '/home/cloudera/HiveMeetup/HiveStockCovariance/data/NYSE_daily_prices_Q.csv' into table NYSE;
+
+5. Calculate the Covariance
+
+Select a.STOCK_SYMBOL, b.STOCK_SYMBOL, month(a.STOCK_DATE),(AVG(a.STOCK_PRICE_HIGH*b.STOCK_PRICE_HIGH) - (AVG	 (a.STOCK_PRICE_HIGH)*AVG(b.STOCK_PRICE_HIGH))) from nyse a join nyse b on a.STOCK_DATE=b.STOCK_DATE where a.STOCK_SYMBOL<b.STOCK_SYMBOL and year(a.STOCK_DATE)=2008 group by a.STOCK_SYMBOL, b.STOCK_SYMBOL,month(a.STOCK_DATE);
+
+-------
+
+Setting Hive Classpath:
+
+1. Go into Cloudera home directory
+
+2. sudo gedit .bashrc
+
+3. Copy below classpath into .bashrc
+export JAVA_HOME=/usr/lib/jvm/java-6-sun-1.6.0.24
+export CLASSPATH=$CLASSPATH:/usr/lib/hive/lib/hive-exec-0.7.0-cdh3u0.jar:/usr/lib/hive/lib/hive-jdbc-0.7.0-cdh3u0.jar:/usr/lib/hive/lib/hive-metastore-0.7.0-cdh3u0.jar:/usr/lib/hive/lib/hive-service-0.7.0-cdh3u0.jar:/usr/lib/hive/lib/libfb303.jar:/usr/lib/hive/lib/log4j-1.2.15.jar:/usr/lib/hive/lib/log4j-12.16.jar:/usr/lib/hadoop-0.20/hadoop-0.20.2-cdh3u0-core.jar:/usr/lib/hadoop-0.20/lib/log4j-1.2.15.jar:/usr/lib/hadoop-0.20/lib/commons-logging-1.0.4.jar:/usr/lib/hadoop-0.20/lib/commons-logging-api-1.0.4.jar:/usr/lib/hadoop-0.20/lib/slf4j-api-1.4.3.jar:/usr/lib/hadoop-0.20/lib/slf4j-log4j12-1.4.3.jar
+
+> 4. source .bashrc
+> This will actually setup the classpath into that shell.
+
+5. Start Hive thrift server onto different terminal
+Command to Start the thrift server :
+HIVE_PORT=10000 sudo /usr/lib/hive/bin/hive --service hiveserver
+
+
+
+----------
+Show the source application:
+1. root@cloudera-vm:/usr/lib/hive/conf# cd /home/cloudera/HiveMeetup/HiveStockCovariance/src
+root@cloudera-vm:/home/cloudera/HiveMeetup/HiveStockCovariance/src# echo $ClassPath
+
+2. javac -classpath $CLASSPATH *.java
+
+
+In another terminal
+a.Command to Start the thrift server : 
+HIVE_PORT=10000 sudo /usr/lib/hive/bin/hive --service hiveserver
+
+------------
+1. Now check the health of HDFS
+http://localhost:50070/dfshealth.jsp
+
+2. check the content in /usr/hive/warehouse
+root@cloudera-vm:/home/cloudera/HiveMeetup/HiveStockCovariance/src# hadoop dfs -cat hdfs:/user/hive/warehouse/stock.db/nyse/NYSE_daily_prices_Q.csv
+
+
+
+
